@@ -21,6 +21,7 @@ export default {
       colors: {
         dark: "#1E1E1E",
         grey: "#444444",
+        light: "#F5F5F5",
       },
     },
   },

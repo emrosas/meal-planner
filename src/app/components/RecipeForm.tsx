@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useMutation } from "convex/react";
 import { useState } from "react";
@@ -7,12 +7,14 @@ import Button from "./Button";
 
 export default function RecipeForm() {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const addRecipe = useMutation(api.recipes.createRecipe);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addRecipe({title});
+    addRecipe({ title, description });
     setTitle("");
+    setDescription("");
   };
 
   return (
@@ -29,6 +31,19 @@ export default function RecipeForm() {
           className="border border-dark/15 rounded-md px-2 py-1"
         />
       </div>
-      <Button>Create Recipe</Button>
+      <div className="grid items-center gap-1">
+        <label htmlFor="description">Description</label>
+        <textarea
+          name="description"
+          rows={5}
+          placeholder="Eg. A delicious, fresh and easy-to-make recipe that will impress your guests."
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          required
+          className="border resize-none border-dark/15 rounded-md px-2 py-1"
+        />
+      </div>
+      <Button type="submit">Create Recipe</Button>
     </form>
   );
+}
