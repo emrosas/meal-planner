@@ -19,3 +19,17 @@ export const getRecipes = query({
     return await ctx.db.query("recipes").collect();
   },
 });
+
+export const getSingleRecipe = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const id = ctx.db.normalizeId("recipes", args.id);
+    if (id === null) {
+      throw new Error("Invalid ID");
+    }
+
+    return await ctx.db.get(id);
+  },
+});

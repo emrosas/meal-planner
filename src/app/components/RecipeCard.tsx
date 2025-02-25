@@ -2,9 +2,11 @@ import { Doc } from "../../../convex/_generated/dataModel";
 
 export default function RecipeCard({ recipe }: { recipe: Doc<"recipes"> }) {
   return (
-    <li className="rounded-lg bg-white p-4 flex gap-4">
-      <div className="bg-grey rounded-md w-24 aspect-square" />
-      <div className="flex flex-col justify-between pt-2">
+    <li className="rounded-lg bg-white p-4 flex gap-4 outline-none outline-offset-1 hover:outline-dark/15">
+      <a
+        href={`/recipes/${recipe._id}`}
+        className="flex flex-col justify-between pt-2 flex-grow"
+      >
         <div>
           <h2 className="text-lg font-medium">{recipe.title}</h2>
           <p className="text-sm">{recipe.description}</p>
@@ -16,7 +18,7 @@ export default function RecipeCard({ recipe }: { recipe: Doc<"recipes"> }) {
             350 Likes
           </span>
         </div>
-      </div>
+      </a>
     </li>
   );
 }

@@ -1,7 +1,16 @@
-import Navbar from "./components/Navbar";
-import { ConvexClientProvider } from "./ConvexClientProvider";
+"use client";
 
-import type { Metadata } from "next";
+import Navbar from "./components/Navbar";
+import { ClerkProvider, useAuth } from "@clerk/nextjs";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { ConvexReactClient } from "convex/react";
+
+const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+const convex = new ConvexReactClient(
+  process.env.NEXT_PUBLIC_CONVEX_URL as string,
+);
+
 import { Chivo, Besley } from "next/font/google";
 import "./globals.css";
 
@@ -15,23 +24,21 @@ const besley = Besley({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Meal Planner App",
-  description:
-    "Browse recipes, add to your favorites and craft your perfect weekly meal plan.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${besley.variable} ${chivo.variable}`}>
-      <body className="font-chivo antialiased text-dark">
-        <Navbar />
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-      </body>
-    </html>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <html lang="en" className={`${besley.variable} ${chivo.variable}`}>
+        <body className="font-chivo antialiased text-dark min-h-screen flex flex-col">
+          <Navbar />
+          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            {children}
+          </ConvexProviderWithClerk>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
