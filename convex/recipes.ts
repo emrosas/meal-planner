@@ -35,7 +35,22 @@ export const generateUploadUrl = mutation(async (ctx) => {
 
 export const getRecipes = query({
   handler: async (ctx) => {
-    return await ctx.db.query("recipes").collect();
+    const recipes = await ctx.db.query("recipes").collect();
+
+    if (!recipes) {
+      return null;
+    }
+    const recipesWithImages = await Promise.all(
+      recipes.map(async (recipe) => {
+        let imageUrl = null;
+        if (recipe.imageStorageId) {
+          imageUrl = await ctx.storage.getUrl(recipe.imageStorageId);
+        }
+        return { ...recipe, imageUrl };
+      }),
+    );
+
+    return recipesWithImages;
   },
 });
 
@@ -75,6 +90,15 @@ export const getSingleRecipe = query({
       return null;
     }
 
-    return await ctx.db.get(id);
+    const recipe = await ctx.db.get(id);
+    if (!recipe) {
+      return null;
+    }
+
+    let imageUrl = null;
+    if (recipe.imageStorageId) {
+      imageUrl = await ctx.storage.getUrl(recipe.imageStorageId);
+    }
+    return { ...recipe, imageUrl };
   },
 });

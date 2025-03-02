@@ -3,9 +3,13 @@
 import { useMutation } from "convex/react";
 import { useState, useRef } from "react";
 import { api } from "../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+
 import Button from "./Button";
 
 export default function RecipeForm() {
+  const router = useRouter();
+
   const generateUploadUrl = useMutation(api.recipes.generateUploadUrl);
 
   const imageInput = useRef<HTMLInputElement>(null);
@@ -13,15 +17,19 @@ export default function RecipeForm() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const addRecipe = useMutation(api.recipes.createRecipe);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
+
     let imageStorageId;
 
     if (selectedImage && selectedImage.size > 0) {
-      if (selectedImage.size > 5 * 1024 * 1024) {
-        alert("File size should be less than 5MB");
+      if (selectedImage.size > 2 * 1024 * 1024) {
+        alert("File size should be less than 2MB");
+        setIsLoading(false);
         return;
       }
       const uploadUrl = await generateUploadUrl();
@@ -36,11 +44,20 @@ export default function RecipeForm() {
 
     const recipe = await addRecipe({ title, description, imageStorageId });
 
+    if (!recipe) {
+      alert("Failed to create recipe");
+      setIsLoading(false);
+      return;
+    }
+
     console.log(recipe);
 
     setTitle("");
     setDescription("");
     setSelectedImage(null);
+    setIsLoading(false);
+
+    router.push("/recipes/" + recipe);
   };
 
   return (
@@ -79,7 +96,9 @@ export default function RecipeForm() {
           }
         />
       </div>
-      <Button type="submit">Create Recipe</Button>
+      <Button type="submit" disabled={isLoading}>
+        Create Recipe
+      </Button>
     </form>
   );
 }

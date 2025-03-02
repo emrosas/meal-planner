@@ -8,7 +8,7 @@ export default function FeaturedRecipes() {
   const recipes = useQuery(api.recipes.getTopFeaturedRecipes);
 
   return (
-    <ul className="grid grid-cols-2 gap-8 mb-16">
+    <ul className="grid sm:grid-cols-3 gap-4 mb-16">
       {recipes?.map((recipe) => {
         return <RecipeCard key={recipe._id} recipe={recipe} featured />;
       })}

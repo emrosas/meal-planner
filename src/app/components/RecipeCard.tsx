@@ -13,26 +13,23 @@ export default function RecipeCard({
     <li className="rounded-lg bg-white p-4 flex gap-4 outline-none outline-offset-1 hover:outline-dark/15">
       <Link
         href={`/recipes/${recipe._id}`}
-        className="flex flex-col justify-between gap-4 flex-grow"
+        className={`flex justify-between gap-4 flex-grow ${featured ? "flex-col" : ""}`}
       >
-        {featured && (
-          <div className="text-yellow-700 rounded-full px-2 py-1 text-xs font-medium">
-            Featured
-          </div>
-        )}
         {recipe.imageUrl && (
           <Image
             src={recipe.imageUrl}
             alt={recipe.title}
             width={400}
             height={225}
-            className="rounded-md w-full"
+            className={`rounded-md ${featured ? "w-full" : "w-48"} object-cover h-full aspect-video flex-grow`}
           />
         )}
         <div className="flex-grow flex flex-col">
           <div className="flex-grow">
             <h2 className="text-lg font-medium">{recipe.title}</h2>
-            <p className="text-xs text-grey font-light">{recipe.description}</p>
+            <p className="text-xs text-grey font-light line-clamp-3">
+              {recipe.description}
+            </p>
           </div>
           <div className="flex gap-4 mt-4">
             <span className="text-xs font-gray">
