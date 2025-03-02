@@ -1,20 +1,46 @@
 "use client";
 
 import { useMutation } from "convex/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { api } from "../../../convex/_generated/api";
 import Button from "./Button";
 
 export default function RecipeForm() {
+  const generateUploadUrl = useMutation(api.recipes.generateUploadUrl);
+
+  const imageInput = useRef<HTMLInputElement>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const addRecipe = useMutation(api.recipes.createRecipe);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addRecipe({ title, description });
+    let imageStorageId;
+
+    if (selectedImage && selectedImage.size > 0) {
+      if (selectedImage.size > 5 * 1024 * 1024) {
+        alert("File size should be less than 5MB");
+        return;
+      }
+      const uploadUrl = await generateUploadUrl();
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": selectedImage.type },
+        body: selectedImage,
+      });
+      const { storageId } = await result.json();
+      imageStorageId = storageId;
+    }
+
+    const recipe = await addRecipe({ title, description, imageStorageId });
+
+    console.log(recipe);
+
     setTitle("");
     setDescription("");
+    setSelectedImage(null);
   };
 
   return (
@@ -41,6 +67,16 @@ export default function RecipeForm() {
           onChange={(event) => setDescription(event.target.value)}
           required
           className="border resize-none border-dark/15 rounded-md px-2 py-1"
+        />
+      </div>
+      <div>
+        <input
+          type="file"
+          accept="image/*"
+          ref={imageInput}
+          onChange={(event) =>
+            setSelectedImage(event.target.files?.[0] || null)
+          }
         />
       </div>
       <Button type="submit">Create Recipe</Button>
