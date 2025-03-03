@@ -1,6 +1,7 @@
 import RecipeList from "./components/RecipeList";
 import FeaturedRecipes from "./components/FeaturedRecipes";
 import Link from "next/link";
+import Fire from "./components/svg/Fire";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,11 +13,12 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="flex-grow flex flex-col">
-      <div className="~px-4/64 pb-16">
+      <div className="~px-4/64 pb-16 text-center flex flex-col items-center">
+        <Fire className="size-40" />
         <h1 className="font-besley font-semibold text-3xl mb-2">
           Simplify Meal Planning and Grocery List generation.
         </h1>
-        <p className="font-light text-balance max-w-prose">
+        <p className="font-light text-balance max-w-prose leading-loose">
           Creating and managing your weekly meals has never been simpler. Just
           select your favorite recipes, adjust the servings and go shopping.
         </p>
@@ -29,7 +31,7 @@ export default function Home() {
           </Link>
           <span className="opacity-60">
             or{" "}
-            <Link href="/#recipes" className="hover:underline">
+            <Link href="/#recipes" className="hover:underline ml-1">
               Browse Recipes
             </Link>
           </span>

@@ -35,7 +35,11 @@ export const generateUploadUrl = mutation(async (ctx) => {
 
 export const getRecipes = query({
   handler: async (ctx) => {
-    const recipes = await ctx.db.query("recipes").collect();
+    const recipes = await ctx.db
+      .query("recipes")
+      .withIndex("by_featured", (q) => q.eq("featured", true))
+      .order("desc")
+      .take(10);
 
     if (!recipes) {
       return null;
@@ -58,7 +62,7 @@ export const getTopFeaturedRecipes = query({
   handler: async (ctx) => {
     const recipes = await ctx.db
       .query("recipes")
-      .withIndex("by_featured", (q) => q.eq("featured", true))
+      .withIndex("by_featured", (q) => q.eq("featured", "top"))
       .order("desc")
       .take(3);
 
