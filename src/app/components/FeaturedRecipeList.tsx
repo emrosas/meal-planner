@@ -4,8 +4,8 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import RecipeCard from "./RecipeCard";
 
-export default function RecipeList() {
-  const recipes = useQuery(api.recipes.getRecipes);
+export default function FeaturedRecipeList() {
+  const recipes = useQuery(api.recipes.getFeaturedRecipes);
 
   return (
     <ul className="grid grid-cols-2 gap-8">

@@ -33,7 +33,7 @@ export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
 });
 
-export const getRecipes = query({
+export const getFeaturedRecipes = query({
   handler: async (ctx) => {
     const recipes = await ctx.db
       .query("recipes")

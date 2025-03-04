@@ -1,15 +1,26 @@
 import { api } from "../../../../convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
+import { Recipe } from "@/types/recipe";
+
 import Image from "next/image";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = await params;
-  const recipe = await fetchQuery(api.recipes.getSingleRecipe, {
+interface RecipePageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function Page({ params }: RecipePageProps) {
+  const id = (await params).id;
+
+  const recipe: Recipe | null = await fetchQuery(api.recipes.getSingleRecipe, {
     id: id,
   });
 
   if (!recipe) {
-    return <div>Recipe not found</div>;
+    return (
+      <main className="flex flex-col flex-grow">
+        <div>Recipe not found: {id}</div>
+      </main>
+    );
   }
 
   return (

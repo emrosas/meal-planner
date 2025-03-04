@@ -1,5 +1,5 @@
-import RecipeList from "./components/RecipeList";
-import FeaturedRecipes from "./components/FeaturedRecipes";
+import FeaturedRecipeList from "./components/FeaturedRecipeList";
+import TopFeaturedRecipeList from "./components/TopFeaturedRecipeList";
 import Link from "next/link";
 import Fire from "./components/svg/Fire";
 import { Metadata } from "next";
@@ -42,13 +42,13 @@ export default function Home() {
           <h2 className="text-center mb-8 font-besley font-semibold text-3xl">
             Recipes of The Week
           </h2>
-          <FeaturedRecipes />
+          <TopFeaturedRecipeList />
         </section>
         <section>
           <h2 className="text-center mb-8 font-besley font-semibold text-3xl">
             Featured Recipes
           </h2>
-          <RecipeList />
+          <FeaturedRecipeList />
         </section>
       </div>
     </main>
