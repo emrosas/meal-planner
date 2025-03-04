@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Fire from "./svg/Fire";
 
 export default function Navbar() {
   const pathname = usePathname();

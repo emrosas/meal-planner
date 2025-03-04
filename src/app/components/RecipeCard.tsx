@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { TopFeaturedRecipe } from "@/types/recipe";
+import User from "./svg/User";
+import Clock from "./svg/Clock";
+import Heart from "./svg/Heart";
 
 export default function RecipeCard({
   recipe,
@@ -10,38 +13,44 @@ export default function RecipeCard({
   featured?: boolean;
 }) {
   return (
-    <li className="rounded-lg bg-white p-4 flex gap-4 outline-none outline-offset-1 hover:outline-dark/15">
-      <Link
-        href={`/recipes/${recipe._id}`}
-        className={`flex justify-between gap-4 flex-grow ${featured ? "flex-col" : ""}`}
-      >
-        {recipe.imageUrl && (
+    <li
+      className={`rounded-lg bg-white p-4 grid ${featured ? "gap-0 grid-rows-subgrid row-span-2" : "grid-cols-[auto_1fr] gap-4"}`}
+    >
+      {recipe.imageUrl && (
+        <Link href={`/recipes/${recipe._id}`} className="group">
           <Image
             src={recipe.imageUrl}
             alt={recipe.title}
             width={400}
             height={225}
-            className={`rounded-md ${featured ? "w-full" : "w-48"} object-cover h-full aspect-video flex-grow`}
+            className={`rounded-md ${featured ? "aspect-video" : "aspect-square w-32"} object-cover`}
           />
-        )}
-        <div className="flex-grow flex flex-col">
-          <div className="flex-grow">
-            <h2 className="text-lg font-medium">{recipe.title}</h2>
-            <p className="text-xs text-grey font-light line-clamp-3">
-              {recipe.description}
-            </p>
-          </div>
-          <div className="flex gap-4 mt-4">
-            <span className="text-xs font-gray">
-              {recipe.userName ? recipe.userName : "Anonymous"}
-            </span>
-            <span className="text-xs font-gray">10-15 minutes</span>
-            <span className="text-xs font-gray flex-grow text-right">
-              350 Likes
-            </span>
-          </div>
+        </Link>
+      )}
+      <div className="grid">
+        <Link href={`/recipes/${recipe._id}`} className="group mt-4 mb-2">
+          <h2 className="text-lg font-medium group-hover:underline group-hover:text-black leading-none">
+            {recipe.title}
+          </h2>
+        </Link>
+        <p className="text-xs text-grey font-light line-clamp-3">
+          {recipe.description}
+        </p>
+        <div className="flex gap-4 mt-4">
+          <span className="text-xs font-gray flex gap-1 items-center">
+            <User className="size-3" />
+            {recipe.userName ? recipe.userName : "Anonymous"}
+          </span>
+          <span className="text-xs font-gray flex gap-1 items-center">
+            <Clock className="size-3" />
+            10-15 min
+          </span>
+          <span className="text-xs font-gray justify-end flex-grow text-right flex gap-1 items-center">
+            350
+            <Heart className="size-4" />
+          </span>
         </div>
-      </Link>
+      </div>
     </li>
   );
 }

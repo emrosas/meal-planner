@@ -1,7 +1,5 @@
-// interface props
-interface SVGProps {
-  className?: string;
-}
+import { SVGProps } from "@/types/components";
+
 export default function Fire({ className }: SVGProps) {
   return (
     <svg
