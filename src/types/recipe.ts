@@ -9,3 +9,7 @@ export type TopFeaturedRecipe = NonNullable<
 export type Recipe = NonNullable<
   FunctionReturnType<typeof api.recipes.getSingleRecipe>
 >;
+
+export type Ingredient = NonNullable<
+  FunctionReturnType<typeof api.ingredients.getSingleIngredient>
+>;
