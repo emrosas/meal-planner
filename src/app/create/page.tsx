@@ -1,4 +1,4 @@
-import RecipeForm from "../components/RecipeForm";
+import RecipeCreation from "@/components/RecipeCreation";
 
 export default function CreatePage() {
   return (
@@ -12,7 +12,7 @@ export default function CreatePage() {
           and let others enjoy your culinary creations!
         </p>
       </div>
-      <RecipeForm />
+      <RecipeCreation />
     </main>
   );
 }

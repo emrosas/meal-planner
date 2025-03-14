@@ -70,5 +70,5 @@
 ol {
   display: block !important;
   list-style-type: decimal !important;
-  padding-inline-start: 40px;
+  /* padding-inline-start: 40px; */
 }
