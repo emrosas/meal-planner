@@ -11,7 +11,19 @@ import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
+import {
+  FormIngredient,
+  Step,
+  useRecipeForm,
+} from "@/contexts/RecipeFormContext";
+import IngredientSelect from "@/components/recipe-form/IngredientSelect";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function RecipeForm() {
   const {
@@ -20,12 +32,16 @@ export default function RecipeForm() {
     description,
     setDescription,
     setSteps,
+    ingredients,
+    setIngredients,
     selectedImage,
     setSelectedImage,
     setImagePreview,
   } = useRecipeForm();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] =
+    useState<FormIngredient | null>(null);
 
   const imageInput = useRef<HTMLInputElement>(null);
   const stepInput = useRef<HTMLInputElement>(null);
@@ -47,6 +63,10 @@ export default function RecipeForm() {
     if (stepInput.current) {
       stepInput.current.value = "";
     }
+  };
+
+  const handleIngredientSelect = (ingredient: FormIngredient) => {
+    setSelectedIngredient(ingredient);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +111,7 @@ export default function RecipeForm() {
   };
 
   return (
-    <form className="max-w-sm mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="grid items-center gap-1">
         <label htmlFor="title">Title</label>
         <Input
@@ -138,7 +158,7 @@ export default function RecipeForm() {
         />
       </div>
       <div className="grid items-center gap-1">
-        <label htmlFor="ingredients">Preparation Steps</label>
+        <label htmlFor="steps">Preparation Steps</label>
         <div className="flex gap-2">
           <Input
             type="text"
@@ -148,7 +168,39 @@ export default function RecipeForm() {
             required
           />
           <Button type="button" variant="outline" onClick={handleAddStep}>
-            Add Step
+            Add
+          </Button>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="ingredients">Ingredients</label>
+        <div className="grid grid-cols-[3fr_2fr_2fr_1fr] gap-2">
+          <IngredientSelect
+            onSelectIngredient={handleIngredientSelect}
+            placeholder="Search ingredients..."
+          />
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Meas." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="pc">Piece(s)</SelectItem>
+              <SelectItem value="g">Grams</SelectItem>
+              <SelectItem value="kg">Kilograms</SelectItem>
+              <SelectItem value="ml">Milliliters</SelectItem>
+              <SelectItem value="l">Liters</SelectItem>
+              <SelectItem value="tsp">Teaspoons</SelectItem>
+              <SelectItem value="tbsp">Tablespoons</SelectItem>
+              <SelectItem value="cup">Cups</SelectItem>
+            </SelectContent>
+          </Select>
+          <Input
+            type="number"
+            placeholder="Amount"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <Button type="button" variant="outline" onClick={handleAddStep}>
+            Add
           </Button>
         </div>
       </div>
