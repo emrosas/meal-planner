@@ -25,5 +25,6 @@ export default defineSchema({
     userName: v.optional(v.string()),
     featured: v.optional(v.union(v.boolean(), v.literal("top"))),
     imageStorageId: v.optional(v.id("_storage")),
+    ingredients: v.optional(v.array(v.id("ingredients"))),
   }).index("by_featured", ["featured"]),
 });

@@ -11,11 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  FormIngredient,
-  Step,
-  useRecipeForm,
-} from "@/contexts/RecipeFormContext";
+import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
 import IngredientSelect from "@/components/recipe-form/IngredientSelect";
 import {
   Select,
@@ -24,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Ingredient } from "@/types/recipe";
 
 export default function RecipeForm() {
   const {
@@ -31,9 +28,8 @@ export default function RecipeForm() {
     setTitle,
     description,
     setDescription,
+    steps,
     setSteps,
-    ingredients,
-    setIngredients,
     selectedImage,
     setSelectedImage,
     setImagePreview,
@@ -41,7 +37,7 @@ export default function RecipeForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIngredient, setSelectedIngredient] =
-    useState<FormIngredient | null>(null);
+    useState<Ingredient | null>(null);
 
   const imageInput = useRef<HTMLInputElement>(null);
   const stepInput = useRef<HTMLInputElement>(null);
@@ -65,7 +61,7 @@ export default function RecipeForm() {
     }
   };
 
-  const handleIngredientSelect = (ingredient: FormIngredient) => {
+  const handleIngredientSelect = (ingredient: Ingredient) => {
     setSelectedIngredient(ingredient);
   };
 
@@ -92,7 +88,23 @@ export default function RecipeForm() {
       imageStorageId = storageId;
     }
 
-    const recipe = await addRecipe({ title, description, imageStorageId });
+    const recipeSteps = steps.map((step) => step.content);
+    let recipeIngredients;
+    if (selectedImage) {
+      recipeIngredients = selectedIngredient
+        ? Array(selectedIngredient?._id)
+        : [];
+    } else {
+      throw new Error("No ingredient selected");
+    }
+
+    const recipe = await addRecipe({
+      title,
+      description,
+      imageStorageId,
+      steps: recipeSteps,
+      ingredients: recipeIngredients,
+    });
 
     if (!recipe) {
       alert("Failed to create recipe");

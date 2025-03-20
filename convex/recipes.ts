@@ -6,6 +6,8 @@ export const createRecipe = mutation({
     title: v.string(),
     description: v.string(),
     imageStorageId: v.optional(v.id("_storage")),
+    steps: v.array(v.string()),
+    ingredients: v.array(v.id("ingredients")),
   },
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
@@ -23,6 +25,8 @@ export const createRecipe = mutation({
       userName: user.name ? user.name : "Anonymous",
       featured: false,
       imageStorageId: args.imageStorageId,
+      steps: args.steps,
+      ingredients: args.ingredients,
     });
 
     return recipeId;
