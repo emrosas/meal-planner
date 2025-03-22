@@ -1,11 +1,12 @@
 import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
 
 import Image from "next/image";
-import Trash from "@/app/components/svg/Trash";
+import Trash from "@/components/svg/Trash";
 import { Button } from "@/components/ui/button";
 
 export default function RecipePreview() {
-  const { title, description, imagePreview, steps, setSteps } = useRecipeForm();
+  const { title, description, imagePreview, ingredients, steps, setSteps } =
+    useRecipeForm();
 
   const handleDeleteStep = (id: string) => {
     setSteps((prev: Step[]) => prev.filter((step) => step.id !== id));
@@ -48,6 +49,42 @@ export default function RecipePreview() {
           </p>
         )}
       </div>
+      {/* Ingredients to add to the recipe */}
+      {ingredients?.length > 0 ? (
+        <div className="px-4">
+          <h3 className="text-grey text-lg font-medium">Ingredients</h3>
+          <ul className="text-xs list-disc ml-4">
+            {ingredients.map(({ id, name, quantity, unit }, index) => (
+              <li key={index} className="group leading-none">
+                <div className="flex items-center gap-2">
+                  <span className="flex-grow capitalize">{name}</span>
+                  <div className="flex items-center gap-1">
+                    <span className="flex-grow">{quantity}</span>
+                    <span className="flex-grow">{unit}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeleteStep(id)}
+                    className="group-hover:opacity-100 opacity-0"
+                  >
+                    <Trash />
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center px-4">
+          <h3 className="text-grey/50 text-lg font-medium">
+            No Ingredients provided.
+          </h3>
+          <p className="text-sm text-grey/50">
+            Add some to tell people what they need to make your recipe.
+          </p>
+        </div>
+      )}
       {/* Steps to add to the recipe */}
       {steps?.length > 0 ? (
         <div className="px-4">
@@ -59,7 +96,7 @@ export default function RecipePreview() {
                   <span className="flex-grow">{content}</span>
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={() => handleDeleteStep(id)}
                     className="group-hover:opacity-100 opacity-0"
                   >

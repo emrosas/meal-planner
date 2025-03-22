@@ -7,7 +7,23 @@ export const createRecipe = mutation({
     description: v.string(),
     imageStorageId: v.optional(v.id("_storage")),
     steps: v.array(v.string()),
-    ingredients: v.array(v.id("ingredients")),
+    ingredients: v.array(
+      v.object({
+        id: v.id("ingredients"),
+        name: v.string(),
+        quantity: v.number(),
+        unit: v.union(
+          v.literal("pc"),
+          v.literal("g"),
+          v.literal("kg"),
+          v.literal("ml"),
+          v.literal("l"),
+          v.literal("tsp"),
+          v.literal("tbsp"),
+          v.literal("cup"),
+        ),
+      }),
+    ),
   },
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();

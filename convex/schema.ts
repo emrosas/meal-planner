@@ -25,6 +25,24 @@ export default defineSchema({
     userName: v.optional(v.string()),
     featured: v.optional(v.union(v.boolean(), v.literal("top"))),
     imageStorageId: v.optional(v.id("_storage")),
-    ingredients: v.optional(v.array(v.id("ingredients"))),
+    ingredients: v.optional(
+      v.array(
+        v.object({
+          id: v.id("ingredients"),
+          name: v.string(),
+          quantity: v.number(),
+          unit: v.union(
+            v.literal("pc"),
+            v.literal("g"),
+            v.literal("kg"),
+            v.literal("ml"),
+            v.literal("l"),
+            v.literal("tsp"),
+            v.literal("tbsp"),
+            v.literal("cup"),
+          ),
+        }),
+      ),
+    ),
   }).index("by_featured", ["featured"]),
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "./components/Navbar";
+import Navbar from "@/components/Navbar";
 import { ClerkProvider, useAuth } from "@clerk/nextjs";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ConvexReactClient } from "convex/react";

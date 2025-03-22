@@ -2,7 +2,7 @@
 
 import { useMutation } from "convex/react";
 import { useState, useRef } from "react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
-import IngredientSelect from "@/components/recipe-form/IngredientSelect";
+// import IngredientSelect from "@/components/recipe-form/ingredient-selection/IngredientSelect";
+import IngredientAdd from "./recipe-form/ingredient-selection/IngredientAdd";
 import {
   Select,
   SelectContent,
@@ -169,6 +170,10 @@ export default function RecipeForm() {
           required
         />
       </div>
+      <div>
+        <label htmlFor="ingredients">Ingredients</label>
+        <IngredientAdd />
+      </div>
       <div className="grid items-center gap-1">
         <label htmlFor="steps">Preparation Steps</label>
         <div className="flex gap-2">
@@ -177,39 +182,6 @@ export default function RecipeForm() {
             name="steps"
             placeholder="Eg. Mix all ingredients together..."
             ref={stepInput}
-            required
-          />
-          <Button type="button" variant="outline" onClick={handleAddStep}>
-            Add
-          </Button>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="ingredients">Ingredients</label>
-        <div className="grid grid-cols-[3fr_2fr_2fr_1fr] gap-2">
-          <IngredientSelect
-            onSelectIngredient={handleIngredientSelect}
-            placeholder="Search ingredients..."
-          />
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Meas." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="pc">Piece(s)</SelectItem>
-              <SelectItem value="g">Grams</SelectItem>
-              <SelectItem value="kg">Kilograms</SelectItem>
-              <SelectItem value="ml">Milliliters</SelectItem>
-              <SelectItem value="l">Liters</SelectItem>
-              <SelectItem value="tsp">Teaspoons</SelectItem>
-              <SelectItem value="tbsp">Tablespoons</SelectItem>
-              <SelectItem value="cup">Cups</SelectItem>
-            </SelectContent>
-          </Select>
-          <Input
-            type="number"
-            placeholder="Amount"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
           <Button type="button" variant="outline" onClick={handleAddStep}>
             Add

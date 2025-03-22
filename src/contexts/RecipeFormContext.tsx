@@ -1,4 +1,4 @@
-import { Ingredient } from "@/types/recipe";
+import { RecipeIngredient } from "@/types/recipe";
 import {
   createContext,
   useContext,
@@ -25,8 +25,8 @@ interface RecipeFormContextType {
   setImagePreview: (preview: string | null) => void;
   steps: Step[];
   setSteps: Dispatch<SetStateAction<Step[]>>;
-  ingredients: Ingredient[];
-  setIngredients: Dispatch<SetStateAction<Ingredient[]>>;
+  ingredients: RecipeIngredient[];
+  setIngredients: Dispatch<SetStateAction<RecipeIngredient[]>>;
 }
 
 const RecipeFormContext = createContext<RecipeFormContextType | undefined>(

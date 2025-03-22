@@ -1,7 +1,7 @@
-import FeaturedRecipeList from "./components/FeaturedRecipeList";
-import TopFeaturedRecipeList from "./components/TopFeaturedRecipeList";
+import FeaturedRecipeList from "@/components/FeaturedRecipeList";
+import TopFeaturedRecipeList from "@/components/TopFeaturedRecipeList";
 import Link from "next/link";
-import Fire from "./components/svg/Fire";
+import Fire from "@/components/svg/Fire";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
 "use client";
 
 import RecipePreview from "./recipe-form/RecipePreview";
-import RecipeForm from "@/app/components/RecipeForm";
+import RecipeForm from "@/components/RecipeForm";
 import { RecipeFormProvider } from "@/contexts/RecipeFormContext";
 
 export default function RecipeCreation() {

@@ -22,7 +22,7 @@ import {
 
 import { Ingredient } from "@/types/recipe";
 import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 interface IngredientSelectProps {
   onSelectIngredient: (ingredient: Ingredient) => void;
