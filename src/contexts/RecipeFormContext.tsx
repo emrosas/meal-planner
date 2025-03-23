@@ -39,7 +39,7 @@ export function RecipeFormProvider({ children }: { children: ReactNode }) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [steps, setSteps] = useState<Step[]>([]);
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
 
   useEffect(() => {
     return () => {

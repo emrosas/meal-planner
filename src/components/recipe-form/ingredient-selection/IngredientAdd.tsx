@@ -1,4 +1,4 @@
-// import { useRecipeForm } from "@/contexts/RecipeFormContext";
+import { useRecipeForm } from "@/contexts/RecipeFormContext";
 import { useState } from "react";
 import IngredientSelect from "./IngredientSelect";
 import { Ingredient, Unit } from "@/types/recipe";
@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRecipeForm } from "@/contexts/RecipeFormContext";
 
 export default function IngredientAdd() {
   const { setIngredients } = useRecipeForm();

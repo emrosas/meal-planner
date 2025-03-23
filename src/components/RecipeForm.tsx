@@ -12,9 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
-// import IngredientSelect from "@/components/recipe-form/ingredient-selection/IngredientSelect";
 import IngredientAdd from "./recipe-form/ingredient-selection/IngredientAdd";
-import { Ingredient } from "@/types/recipe";
 
 export default function RecipeForm() {
   const {
@@ -22,6 +20,7 @@ export default function RecipeForm() {
     setTitle,
     description,
     setDescription,
+    ingredients,
     steps,
     setSteps,
     selectedImage,
@@ -30,8 +29,6 @@ export default function RecipeForm() {
   } = useRecipeForm();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] =
-    useState<Ingredient | null>(null);
 
   const imageInput = useRef<HTMLInputElement>(null);
   const stepInput = useRef<HTMLInputElement>(null);
@@ -79,14 +76,14 @@ export default function RecipeForm() {
     }
 
     const recipeSteps = steps.map((step) => step.content);
-    let recipeIngredients;
-    if (selectedImage) {
-      recipeIngredients = selectedIngredient
-        ? Array(selectedIngredient?._id)
-        : [];
-    } else {
-      throw new Error("No ingredient selected");
-    }
+    const recipeIngredients = ingredients.map((ingredient) => {
+      return {
+        id: ingredient.id,
+        name: ingredient.name,
+        quantity: ingredient.quantity,
+        unit: ingredient.unit,
+      };
+    });
 
     const recipe = await addRecipe({
       title,
