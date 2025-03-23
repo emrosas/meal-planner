@@ -14,13 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
 // import IngredientSelect from "@/components/recipe-form/ingredient-selection/IngredientSelect";
 import IngredientAdd from "./recipe-form/ingredient-selection/IngredientAdd";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Ingredient } from "@/types/recipe";
 
 export default function RecipeForm() {
@@ -60,10 +53,6 @@ export default function RecipeForm() {
     if (stepInput.current) {
       stepInput.current.value = "";
     }
-  };
-
-  const handleIngredientSelect = (ingredient: Ingredient) => {
-    setSelectedIngredient(ingredient);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
