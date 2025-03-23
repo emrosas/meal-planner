@@ -1,5 +1,3 @@
-import IngredientSelect from "../components/recipe-form/IngredientSelect";
-
 export default function PlanPage() {
   return (
     <main>
@@ -13,9 +11,7 @@ export default function PlanPage() {
           the instructions for each recipe.
         </p>
       </div>
-      <section className="~px-4/64">
-        <IngredientSelect />
-      </section>
+      <section className="~px-4/64"></section>
     </main>
   );
 }
