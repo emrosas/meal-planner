@@ -12,6 +12,7 @@ export default defineSchema({
       v.literal("grain"),
       v.literal("spice"),
       v.literal("pasta"),
+      v.literal("other"),
     ),
   }).searchIndex("search_ingredients", {
     searchField: "name",
