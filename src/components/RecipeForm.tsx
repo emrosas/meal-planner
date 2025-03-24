@@ -110,7 +110,10 @@ export default function RecipeForm() {
   };
 
   return (
-    <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col gap-4 sticky top-[20%]"
+      onSubmit={handleSubmit}
+    >
       <div className="grid items-center gap-1">
         <label htmlFor="title">Title</label>
         <Input
