@@ -3,17 +3,32 @@ import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
 import Image from "next/image";
 import Trash from "@/components/svg/Trash";
 import { Button } from "@/components/ui/button";
+import { RecipeIngredient } from "@/types/recipe";
 
 export default function RecipePreview() {
-  const { title, description, imagePreview, ingredients, steps, setSteps } =
-    useRecipeForm();
+  const {
+    title,
+    description,
+    imagePreview,
+    ingredients,
+    setIngredients,
+    steps,
+    setSteps,
+    clearForm,
+  } = useRecipeForm();
 
   const handleDeleteStep = (id: string) => {
     setSteps((prev: Step[]) => prev.filter((step) => step.id !== id));
   };
 
+  const handleDeleteIngredient = (id: string) => {
+    setIngredients((prev: RecipeIngredient[]) =>
+      prev.filter((ingredient) => ingredient.id !== id),
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4">
       {/* Recipe Card Preview */}
       <div className="rounded-lg bg-white p-4 grid gap-0 grid-rows-subgrid row-span-2 border-grey/15 border ">
         {imagePreview ? (
@@ -55,7 +70,7 @@ export default function RecipePreview() {
           <h3 className="text-grey text-lg font-medium">Ingredients</h3>
           <ul className="text-xs list-disc ml-4">
             {ingredients.map(({ id, name, quantity, unit }, index) => (
-              <li key={index} className="group leading-none">
+              <li key={index + id} className="group leading-none">
                 <div className="flex items-center gap-2">
                   <span className="flex-grow capitalize">{name}</span>
                   <div className="flex items-center gap-1">
@@ -65,7 +80,7 @@ export default function RecipePreview() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleDeleteStep(id)}
+                    onClick={() => handleDeleteIngredient(id)}
                     className="group-hover:opacity-100 opacity-0"
                   >
                     <Trash />
@@ -117,6 +132,9 @@ export default function RecipePreview() {
           </p>
         </div>
       )}
+      <Button variant="secondary" className="mt-4" onClick={clearForm}>
+        Start Over
+      </Button>
     </div>
   );
 }
