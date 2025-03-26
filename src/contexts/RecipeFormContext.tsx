@@ -1,4 +1,4 @@
-import { RecipeIngredient } from "@/types/recipe";
+import { RecipeIngredient, Time } from "@/types/recipe";
 import {
   createContext,
   useContext,
@@ -19,6 +19,7 @@ interface RecipeFormState {
   imagePreview: string | null;
   steps: Step[];
   ingredients: RecipeIngredient[];
+  time: Time;
 }
 
 interface RecipeFormContextType extends RecipeFormState {
@@ -29,12 +30,9 @@ interface RecipeFormContextType extends RecipeFormState {
   setImagePreview: (preview: string | null) => void;
   setSteps: Dispatch<SetStateAction<Step[]>>;
   setIngredients: Dispatch<SetStateAction<RecipeIngredient[]>>;
+  setTime: (time: Time) => void;
   clearForm: () => void;
 }
-
-const RecipeFormContext = createContext<RecipeFormContextType | undefined>(
-  undefined,
-);
 
 const initialFormState: RecipeFormState = {
   title: "",
@@ -42,35 +40,51 @@ const initialFormState: RecipeFormState = {
   imagePreview: null,
   steps: [],
   ingredients: [],
+  time: "15-30 min",
 };
 
-const loadFormState = (): RecipeFormState => {
-  if (typeof window === "undefined") return initialFormState;
-
-  const savedState = localStorage.getItem("recipeFormState");
-  if (!savedState) return initialFormState;
-
-  try {
-    return JSON.parse(savedState);
-  } catch (error) {
-    console.error("Failed to parse saved form state:", error);
-    return initialFormState;
-  }
-};
+const RecipeFormContext = createContext<RecipeFormContextType | undefined>(
+  undefined,
+);
 
 export function RecipeFormProvider({ children }: { children: ReactNode }) {
-  const [title, setTitle] = useState(() => loadFormState().title);
-  const [description, setDescription] = useState(
-    () => loadFormState().description,
-  );
+  const [title, setTitle] = useState(initialFormState.title);
+  const [description, setDescription] = useState(initialFormState.description);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    () => loadFormState().imagePreview,
+    initialFormState.imagePreview,
   );
-  const [steps, setSteps] = useState<Step[]>(() => loadFormState().steps);
+  const [steps, setSteps] = useState<Step[]>(initialFormState.steps);
   const [ingredients, setIngredients] = useState<RecipeIngredient[]>(
-    () => loadFormState().ingredients,
+    initialFormState.ingredients,
   );
+  const [time, setTime] = useState<Time>(initialFormState.time);
+
+  // Track if we're on the client side
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    const loadFormState = (): RecipeFormState => {
+      try {
+        const savedState = localStorage.getItem("recipeFormState");
+        if (!savedState) return initialFormState;
+        return JSON.parse(savedState);
+      } catch (error) {
+        console.error("Failed to parse saved form state:", error);
+        return initialFormState;
+      }
+    };
+
+    const savedState = loadFormState();
+    setTitle(savedState.title);
+    setDescription(savedState.description);
+    setImagePreview(savedState.imagePreview);
+    setSteps(savedState.steps);
+    setIngredients(savedState.ingredients);
+    setTime(savedState.time);
+  }, []);
 
   const clearForm = () => {
     setTitle("");
@@ -79,24 +93,35 @@ export function RecipeFormProvider({ children }: { children: ReactNode }) {
     setImagePreview(null);
     setSteps([]);
     setIngredients([]);
-    localStorage.removeItem("recipeFormState");
+    setTime("15-30 min");
+
+    if (isClient) {
+      localStorage.removeItem("recipeFormState");
+    }
   };
 
   useEffect(() => {
-    const formState: RecipeFormState = {
-      title,
-      description,
-      imagePreview,
-      steps,
-      ingredients,
-    };
+    if (isClient) {
+      const formState: RecipeFormState = {
+        title,
+        description,
+        imagePreview,
+        steps,
+        ingredients,
+        time,
+      };
 
-    localStorage.setItem("recipeFormState", JSON.stringify(formState));
-  }, [title, description, imagePreview, steps, ingredients]);
+      localStorage.setItem("recipeFormState", JSON.stringify(formState));
+    }
+  }, [title, description, imagePreview, steps, ingredients, time, isClient]);
 
   useEffect(() => {
     return () => {
-      if (imagePreview && imagePreview.startsWith("blob:")) {
+      if (
+        imagePreview &&
+        typeof imagePreview === "string" &&
+        imagePreview.startsWith("blob:")
+      ) {
         URL.revokeObjectURL(imagePreview);
       }
     };
@@ -117,6 +142,8 @@ export function RecipeFormProvider({ children }: { children: ReactNode }) {
         setSteps,
         ingredients,
         setIngredients,
+        time,
+        setTime,
         clearForm,
       }}
     >

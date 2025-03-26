@@ -4,6 +4,10 @@ import Image from "next/image";
 import Trash from "@/components/svg/Trash";
 import { Button } from "@/components/ui/button";
 import { RecipeIngredient } from "@/types/recipe";
+import User from "../svg/User";
+import Clock from "../svg/Clock";
+import Heart from "../svg/Heart";
+import { SignedIn, useUser } from "@clerk/nextjs";
 
 export default function RecipePreview() {
   const {
@@ -14,8 +18,11 @@ export default function RecipePreview() {
     setIngredients,
     steps,
     setSteps,
+    time,
     clearForm,
   } = useRecipeForm();
+
+  const { user } = useUser();
 
   const handleDeleteStep = (id: string) => {
     setSteps((prev: Step[]) => prev.filter((step) => step.id !== id));
@@ -63,6 +70,32 @@ export default function RecipePreview() {
             your recipe unique.
           </p>
         )}
+        <div className="flex gap-4 mt-4">
+          <SignedIn>
+            <span className="text-xs font-gray flex gap-1 items-center">
+              {user?.hasImage ? (
+                <Image
+                  className="size-4 rounded-full object-cover"
+                  src={user.imageUrl}
+                  alt="user image"
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <User className="size-3" />
+              )}
+              {user?.fullName}
+            </span>
+          </SignedIn>
+          <span className="text-xs font-gray flex gap-1 items-center">
+            <Clock className="size-4" />
+            {time ? time : "Until Done"}
+          </span>
+          <span className="text-xs font-gray justify-end flex-grow text-right flex gap-1 items-center">
+            350
+            <Heart className="size-4" />
+          </span>
+        </div>
       </div>
       {/* Ingredients to add to the recipe */}
       {ingredients?.length > 0 ? (

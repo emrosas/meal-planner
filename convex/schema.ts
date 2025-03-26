@@ -12,6 +12,7 @@ export default defineSchema({
       v.literal("grain"),
       v.literal("spice"),
       v.literal("pasta"),
+      v.literal("bread"),
       v.literal("other"),
     ),
   }).searchIndex("search_ingredients", {
@@ -43,6 +44,15 @@ export default defineSchema({
             v.literal("cup"),
           ),
         }),
+      ),
+    ),
+    time: v.optional(
+      v.union(
+        v.literal("5 min"),
+        v.literal("10-15 min"),
+        v.literal("15-30 min"),
+        v.literal("30-60 min"),
+        v.literal("+60 min"),
       ),
     ),
   }).index("by_featured", ["featured"]),

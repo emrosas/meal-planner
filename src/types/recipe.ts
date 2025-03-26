@@ -18,7 +18,19 @@ type RecipeIngredients = NonNullable<DocRecipe["ingredients"]>;
 export type RecipeIngredient =
   RecipeIngredients extends Array<infer T> ? T : never;
 
+// Unit for the Ingredients
 export type Unit = RecipeIngredient["unit"];
+
+// Time to complete recipe
+export type Time = NonNullable<DocRecipe["time"]>;
+
+export const TIME_OPTIONS: Time[] = [
+  "5 min",
+  "10-15 min",
+  "15-30 min",
+  "30-60 min",
+  "+60 min",
+];
 
 export type Ingredient = NonNullable<
   FunctionReturnType<typeof api.ingredients.getSingleIngredient>

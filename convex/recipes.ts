@@ -24,6 +24,15 @@ export const createRecipe = mutation({
         ),
       }),
     ),
+    time: v.optional(
+      v.union(
+        v.literal("5 min"),
+        v.literal("10-15 min"),
+        v.literal("15-30 min"),
+        v.literal("30-60 min"),
+        v.literal("+60 min"),
+      ),
+    ),
   },
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
@@ -43,6 +52,7 @@ export const createRecipe = mutation({
       imageStorageId: args.imageStorageId,
       steps: args.steps,
       ingredients: args.ingredients,
+      time: args.time,
     });
 
     return recipeId;

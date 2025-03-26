@@ -43,7 +43,7 @@ export default function RecipeCard({
           </span>
           <span className="text-xs font-gray flex gap-1 items-center">
             <Clock className="size-3" />
-            10-15 min
+            {recipe.time ? recipe.time : "Until Done"}
           </span>
           <span className="text-xs font-gray justify-end flex-grow text-right flex gap-1 items-center">
             350

@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
 
-// import Button from "./Button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Step, useRecipeForm } from "@/contexts/RecipeFormContext";
 import IngredientAdd from "./recipe-form/ingredient-selection/IngredientAdd";
+import TimeSelect from "./recipe-form/time-selection/TimeSelect";
 
 export default function RecipeForm() {
   const {
@@ -26,6 +26,7 @@ export default function RecipeForm() {
     selectedImage,
     setSelectedImage,
     setImagePreview,
+    time,
   } = useRecipeForm();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +92,7 @@ export default function RecipeForm() {
       imageStorageId,
       steps: recipeSteps,
       ingredients: recipeIngredients,
+      time,
     });
 
     if (!recipe) {
@@ -129,7 +131,7 @@ export default function RecipeForm() {
         <label htmlFor="description">Description</label>
         <Textarea
           name="description"
-          rows={4}
+          rows={3}
           placeholder="Eg. A delicious, fresh and easy-to-make recipe that will impress your guests."
           value={description}
           onChange={(event) => setDescription(event.target.value)}
@@ -137,27 +139,30 @@ export default function RecipeForm() {
           required
         />
       </div>
-      <div className="grid items-center gap-1">
-        <label htmlFor="image">Image</label>
-        <Input
-          type="file"
-          accept="image/*"
-          ref={imageInput}
-          name="image"
-          placeholder="Select a file..."
-          onChange={(event) => {
-            const file = event.target.files?.[0] || null;
-            setSelectedImage(file);
+      <div className="grid grid-cols-2 gap-2">
+        <div className="grid items-center gap-1">
+          <label htmlFor="image">Image</label>
+          <Input
+            type="file"
+            accept="image/*"
+            ref={imageInput}
+            name="image"
+            placeholder="Select a file..."
+            onChange={(event) => {
+              const file = event.target.files?.[0] || null;
+              setSelectedImage(file);
 
-            if (file) {
-              const previewUrl = URL.createObjectURL(file);
-              setImagePreview(previewUrl);
-            } else {
-              setImagePreview(null);
-            }
-          }}
-          required
-        />
+              if (file) {
+                const previewUrl = URL.createObjectURL(file);
+                setImagePreview(previewUrl);
+              } else {
+                setImagePreview(null);
+              }
+            }}
+            required
+          />
+        </div>
+        <TimeSelect />
       </div>
       <div>
         <label htmlFor="ingredients">Ingredients</label>
