@@ -27,6 +27,7 @@ export default function RecipeForm() {
     setSelectedImage,
     setImagePreview,
     time,
+    clearForm,
   } = useRecipeForm();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -77,21 +78,13 @@ export default function RecipeForm() {
     }
 
     const recipeSteps = steps.map((step) => step.content);
-    const recipeIngredients = ingredients.map((ingredient) => {
-      return {
-        id: ingredient.id,
-        name: ingredient.name,
-        quantity: ingredient.quantity,
-        unit: ingredient.unit,
-      };
-    });
 
     const recipe = await addRecipe({
       title,
       description,
       imageStorageId,
       steps: recipeSteps,
-      ingredients: recipeIngredients,
+      ingredients,
       time,
     });
 
@@ -102,10 +95,7 @@ export default function RecipeForm() {
     }
 
     console.log(recipe);
-
-    setTitle("");
-    setDescription("");
-    setSelectedImage(null);
+    clearForm();
     setIsLoading(false);
 
     router.push("/recipes/" + recipe);
