@@ -25,7 +25,7 @@ export default defineSchema({
     steps: v.optional(v.array(v.string())),
     userId: v.optional(v.string()),
     userName: v.optional(v.string()),
-    featured: v.optional(v.union(v.boolean(), v.literal("top"))),
+    featured: v.optional(v.boolean()),
     imageStorageId: v.optional(v.id("_storage")),
     ingredients: v.optional(
       v.array(
@@ -55,5 +55,10 @@ export default defineSchema({
         v.literal("+60 min"),
       ),
     ),
+    likes: v.optional(v.number()),
   }).index("by_featured", ["featured"]),
+  favorites: defineTable({
+    likedRecipes: v.array(v.id("recipes")),
+    userId: v.string(),
+  }).index("by_user", ["userId"]),
 });

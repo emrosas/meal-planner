@@ -3,8 +3,8 @@ import { api } from "../../convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { Doc } from "../../convex/_generated/dataModel";
 
-export type TopFeaturedRecipe = NonNullable<
-  FunctionReturnType<typeof api.recipes.getTopFeaturedRecipes>
+export type FeaturedRecipe = NonNullable<
+  FunctionReturnType<typeof api.recipes.getFeaturedRecipes>
 >[number];
 
 export type Recipe = NonNullable<

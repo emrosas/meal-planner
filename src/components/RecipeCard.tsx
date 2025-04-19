@@ -1,16 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { TopFeaturedRecipe } from "@/types/recipe";
+import type { FeaturedRecipe } from "@/types/recipe";
 import User from "./svg/User";
 import Clock from "./svg/Clock";
-import Heart from "./svg/Heart";
+import LikeButton from "./LikeButton";
 
 export default function RecipeCard({
   recipe,
   featured,
+  isLiked = false,
 }: {
-  recipe: TopFeaturedRecipe;
+  recipe: FeaturedRecipe;
   featured?: boolean;
+  isLiked?: boolean;
 }) {
   return (
     <li
@@ -41,14 +43,15 @@ export default function RecipeCard({
             <User className="size-3" />
             {recipe.userName ? recipe.userName : "Anonymous"}
           </span>
-          <span className="text-xs font-gray flex gap-1 items-center">
+          <span className="text-xs font-gray flex flex-grow gap-1 items-center">
             <Clock className="size-3" />
             {recipe.time ? recipe.time : "Until Done"}
           </span>
-          <span className="text-xs font-gray justify-end flex-grow text-right flex gap-1 items-center">
-            350
-            <Heart className="size-4" />
-          </span>
+          <LikeButton
+            recipeId={recipe._id}
+            initialLiked={isLiked}
+            initialLikes={recipe.likes || 0}
+          />
         </div>
       </div>
     </li>
